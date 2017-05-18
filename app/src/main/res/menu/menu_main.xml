@@ -1,17 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
 
     <item
         android:id="@+id/action_search"
-        android:showAsAction="always"
-        android:icon="@mipmap/ic_search"
+        app:showAsAction="always"
+        android:icon="@drawable/icon_search"
         android:title="@string/action_search"/>
+
+    <item android:id="@+id/grid"
+        android:orderInCategory="200"
+        android:icon="@drawable/grid"
+        android:title="grid_icon"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_clear"
-        android:showAsAction="ifRoom"
-        android:icon="@mipmap/ic_search"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/icon_trash"
         android:title="@string/action_clear"/>
 
 </menu>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="RoomQuestTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                <item name="colorPrimary">@color/csusb_blue</item>
+                <item name="colorAccent">@color/csusb_grey</item>
+                <item name="colorPrimaryDark">@color/csusb_grey</item>
+                <item name="android:colorForeground">@color/foreground_material_light</item>
+                <item name="android:textColorPrimary">@color/justWhite</item>
+                <item name="android:statusBarColor">@color/csusb_blue</item>
+        </style>
+
+        <style name="Theme1" parent="android:Theme.Material.Light" >
+                <item name="android:colorPrimary">@color/primary_material_light</item>
+        </style>
+
+        <style name="Theme2" parent="Theme.AppCompat.Light">
+                <item name="colorPrimary">@color/csusb_blue</item>
+                <item name="android:statusBarColor">@color/csusb_blue</item>
+                <item name="android:navigationBarColor">@color/csusb_blue</item>
+                <item name="android:textColorPrimary">@color/justWhite</item>
+                <item name="colorAccent">@color/csusb_grey</item>
+        </style>
+
+        <style name="Theme.RoomQuestTheme" parent="android:Theme.DeviceDefault.Light.DarkActionBar" >
+                <item name="android:statusBarColor">@android:color/holo_blue_bright</item>
+        </style>
+
+        <style name="Theme3" parent="android:Theme.Holo.Light.DarkActionBar">
+                <item name="android:colorPrimary">@color/csusb_blue</item>
+                <item name="android:navigationBarColor">@color/csusb_grey</item>
+                <item name="android:textColorPrimary">@color/justWhite</item>
+                <item name="android:colorForeground">@color/csusb_blue</item>
+                <item name="android:statusBarColor">@color/csusb_blue</item>
+                <item name="android:textColorSecondary">@color/csusb_blue</item>
+                <item name="android:colorPrimaryDark">@color/csusb_blue</item>
+        </style>
+
+        <style name="Theme5" parent="android:Theme.Material.Light.DarkActionBar" />
+
+        <style name="Theme6" parent="android:Theme.Material" />
+
+        <style name="Theme.Light.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+                <item name="colorPrimary">@color/csusb_blue</item>
+                <item name="android:statusBarColor">@color/csusb_blue</item>
+        </style>
+
+        <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+                <item name="colorPrimary">@color/csusb_blue</item>
+                <item name="colorAccent">@color/csusb_grey</item>
+                <item name="android:colorBackground">@color/justWhite</item>
+                <item name="android:statusBarColor">@color/justBlack</item>
+                <item name="android:textColorPrimary">@color/justWhite</item>
+                <item name="android:textColorPrimaryInverse">@color/justBlack</item>
+
+        </style>
+</resources>

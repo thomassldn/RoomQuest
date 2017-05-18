@@ -7,6 +7,11 @@
     <color name="justBlack">#000000</color>
     <color name="justWhite">#ffffff</color>
     <color name="csusb_grey">#808285</color>
-    <color name="csusb_blue">#0065BD</color>
+    <color name="csusb_blue">#0065bd</color>
     <color name="justblackopacy">#00000000</color>
+
+    <color name="justBlue">#0000FF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lightGray">#D3D3D3</color>
+    <color name="yellow">#FFFF00</color>
 </resources>

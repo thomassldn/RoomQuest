@@ -1,18 +1,33 @@
 <resources>
     <string name="app_name">RoomQuest</string>
-    <string name="action_search">Place Search</string>
+    <string name="action_search">Search</string>
     <string name="action_clear">Clear</string>
-    <string name="search_hint">Search address or place</string>
+    <string name="search_hint">Search Building or Place</string>
     <string name="search_title">Search</string>
     <string name="suggestion_text">Suggestion</string>
 
     <!-- progress dialog messages -->
     <string name="address_search">Searching for Address</string>
 
-    <!-- Toast messages -->
+    <!-- Toast messages -->   
     <string name="addressSearchFailed">Address search failed</string>
     <string name="noResultsFound">No Results found</string>
     <string name="JB3URL_NEW">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/JB3RDFLOOR/MapServer</string>
     <string name="JB3URL">https://services3.arcgis.com/CapJ1hlMMupAogng/arcgis/rest/services/JB3RDFLOOR/FeatureServer/1</string>
-    <string name="geocodingServiceUrl">http://roomquest.research.cse:6080/arcgis/rest/services/Rooms_CreateAddressLocator/GeocodeServer</string>
+    <string name="geocodingServiceUrl">http://roomquest.research.cse:6080/arcgis/rest/services/FirstFloorLocator/GeocodeServer</string>
+
+
+    <!-- Map Grid URLS -->
+    <string name="bikeRacks">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/127</string>
+    <string name = "parkingDispensers">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/126</string>
+    <string name="disabilityParkingAreas">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/129</string>
+    <string name="informationCenters">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/125</string>
+    <string name="palmDesertShuttle">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/124</string>
+    <string name="emergencyPhones">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/128</string>
+    <string name="restRooms">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/130</string>
+    <string name="vendingMachines">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/120</string>
+    <string name="healthCenter">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/123</string>
+    <string name="atm">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/122</string>
+    <string name="campusEvacuationSites">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/145</string>
+    <string name="dining">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/121</string>
 </resources>

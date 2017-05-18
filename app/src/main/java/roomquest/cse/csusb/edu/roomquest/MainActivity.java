@@ -1,20 +1,40 @@
 package roomquest.cse.csusb.edu.roomquest;
+/**
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+ *
+ * Modified By: Jose Banuelos, Thomas Saldana
+ * Date: 6 Feb 17
+ *
+ */
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.MatrixCursor;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.BaseColumns;
+import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.SearchView.OnSuggestionListener;
@@ -22,11 +42,14 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.esri.android.map.FeatureLayer;
 import com.esri.android.map.GraphicsLayer;
+import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
 import com.esri.android.map.TiledLayer;
 import com.esri.android.map.ags.ArcGISFeatureLayer;
 import com.esri.android.map.ags.ArcGISLocalTiledLayer;
+import com.esri.android.map.event.OnSingleTapListener;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.android.toolkit.map.MapViewHelper;
 import com.esri.core.geometry.GeometryEngine;
@@ -40,29 +63,29 @@ import com.esri.core.tasks.geocode.LocatorSuggestionParameters;
 import com.esri.core.tasks.geocode.LocatorSuggestionResult;
 import com.esri.core.tasks.na.NAFeaturesAsFeature;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+
+import roomquest.cse.csusb.edu.roomquest.Compass.Compass.Compass;
 
 /**
  * PlaceSearch app uses the geocoding service to convert addresses to and from
  * geographic coordinates and place them on the map.  Search for places, addresses,
  * etc. and get suggestions as you type.
  *
- *
- *
- * Modified By: Jose Banuelos, Thomas Saldana
- * Date: 6 Feb 17
- *
  */
 
-public class MainActivity extends AppCompatActivity {
-
+//public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity implements Grid.Communicator{
 
     private static final String TAG = "PlaceSearch";
     private static final String COLUMN_NAME_ADDRESS = "address";
     private static final String COLUMN_NAME_X = "x";
     private static final String COLUMN_NAME_Y = "y";
-    private static final String LOCATION_TITLE = "Location";
+    private static final String LOCATION_TITLE = "";//was location
+
     private static final String FIND_PLACE = "Find";
     private static final String SUGGEST_PLACE = "Suggest";
     private static boolean suggestClickFlag = false;
@@ -87,38 +110,83 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    //Graphics are objects held in memory that store a shape (geometry)
+    // and are displayed on a map via a GraphicsLayer.
+    GraphicsLayer mGraphicsLayer = new GraphicsLayer(GraphicsLayer.RenderingMode.DYNAMIC);
 
     //***********ADDED CODE ***************
 
-    //MapView mMapView;//leave
-
-    public ArcGISFeatureLayer mFeatureLayer;//leave
-    public String mFeatureServiceUrl;//leave
-    //public GraphicsLayer mGraphicsLayer;//leave
-    // Define ArcGIS Elements
-
     MapView mMapView;
-    final String extern = Environment.getExternalStorageDirectory().getPath();
+    //final String extern = Environment.getExternalStorageDirectory().getPath();
     //final String tpkPath = "/ArcGIS/samples/OfflineRouting/SanDiego.tpk";
 
 
-    GraphicsLayer mGraphicsLayer = new GraphicsLayer(GraphicsLayer.RenderingMode.DYNAMIC);
+    //GraphicsLayer mGraphicsLayer = new GraphicsLayer(GraphicsLayer.RenderingMode.DYNAMIC);
 
     // RouteTask mRouteTask = null;
-    NAFeaturesAsFeature mStops = new NAFeaturesAsFeature();
+    //NAFeaturesAsFeature mStops = new NAFeaturesAsFeature();
 
     Locator mLocator = null;
-    View mCallout = null;
-    Spinner dSpinner;
+    // View mCallout = null;
+    //Spinner dSpinner;
 
     //***********END ADDED CODE ***************
 
 
+    //***PLACE SEARCH ***/
+    public String url = "http://roomquest.research.cse:6080/arcgis/rest/services/FirstFloorLocator/GeocodeServer";
+
+
+
+
+
+
+    //********JOSES CODE ***************/
+    public ArcGISFeatureLayer mFeatureLayer;//leave
+    public ArcGISFeatureLayer mFeatureLayer2;
+    public ArcGISFeatureLayer mFeatureLayer3;
+    public String mFeatureServiceUrl;//leave
+    public String mFeatureServiceUrl2;
+    public String mFeatureServiceUrl3;
+
+    //for changing button color
+    //default set it to the first floor
+    public int whichFloor = 1;
+
+
+    //********END JOSES CODE ***************/
+
+
+
+    //Initialization of compass object
+    Compass mCompass;
+
+    //GPS
+    LocationDisplayManager ldm;
+    public static Point mLocation = null;
+    int mProgress;
+
+
+    //Buttons
+    //declaring the floating action button variables
+    FloatingActionButton plus, base, floor1, floor2, floor3, floor4, floor5;
+    Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounter;
+
+
+
+    boolean isOpen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //start
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setLogo(R.drawable.coyote_head);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+
 
 
         // Setup and show progress dialog
@@ -136,10 +204,10 @@ public class MainActivity extends AppCompatActivity {
         mMapViewHelper = new MapViewHelper(mMapView);
         // Create the default ArcGIS online Locator. If you want to provide your own {@code Locator},
         // user other methods of Locator.
-        String url = "http://roomquest.research.cse:6080/arcgis/rest/services/Rooms_CreateAddressLocator/GeocodeServer";
+
 
         String extern = Environment.getExternalStorageDirectory().getPath();
-        mLocator = Locator.createOnlineLocator();
+        mLocator = Locator.createOnlineLocator(url);
         //mLocator = Locator.createOnlineLocator();
 
         // set logo and enable wrap around
@@ -148,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup listener for map initialized
         mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
-
             @Override
             public void onStatusChanged(Object source, STATUS status) {
                 if (source == mMapView && status == STATUS.INITIALIZED) {
@@ -164,14 +231,462 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }//END onCreate()
+
+
+
+        //**********Campus Code Starts Here**********
+
+        // Set the MapView to allow the user to rotate the map when as part of a pinch gesture.
+        mMapView.setAllowRotationByPinch(true);
+
+        // Enabled wrap around map.
+        mMapView.enableWrapAround(true);
+
+        // Create the Compass custom view, and add it onto the MapView.
+        mCompass = new Compass(this, null, mMapView);
+        mMapView.addView(mCompass);
+
+        // Set a single tap listener on the MapView.
+        mMapView.setOnSingleTapListener(new OnSingleTapListener() {
+
+            public void onSingleTap(float x, float y) {
+
+                // When a single tap gesture is received, reset the map to its default rotation angle,
+                // where North is shown at the top of the device.
+                mMapView.setRotationAngle(0);
+
+                // Also reset the compass angle.
+                mCompass.setRotationAngle(0);
+            }
+        });
+
+
+        //****************BUTTONS  ***********************
+        //adding the fab_plus button
+        plus = (FloatingActionButton)findViewById(R.id.plus);
+        base = (FloatingActionButton)findViewById(R.id.fab_basement);
+        //the button ids were changed to the fab_button ids
+        //final Button buttonb = (Button) findViewById(R.id.fab_basement);
+        base.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // displayToast("Basements");
+                //base.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_coloring));
+                //base.setBackground(getResources().getDrawable(R.drawable.button_coloring));
+                //base.setVisibility(View.INVISIBLE);
+
+                setBasementFloors();
+
+            }
+        });
+
+        floor1 = (FloatingActionButton)findViewById(R.id.fab_first);
+        //final Button button1 = (Button) findViewById(R.id.fab_first);
+        floor1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // displayToast("1st Floors");
+                setFirstFloors();
+                //button1.setBackgroundColor(getResources().getColor(R.color.yellow));
+            }
+        });
+
+        floor2 = (FloatingActionButton)findViewById(R.id.fab_second);
+        //final Button button2 = (Button) findViewById(R.id.fab_second);
+        floor2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // displayToast("2nd Floors");
+                setSecondFloors();
+            }
+        });
+
+        floor3 = (FloatingActionButton)findViewById(R.id.fab_third);
+        //final Button button3 = (Button) findViewById(R.id.fab_third);
+        floor3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // displayToast("3rd Floors");
+                // floor3.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                setThirdFloors();
+            }
+        });
+
+        floor4 = (FloatingActionButton)findViewById(R.id.fab_fourth);
+        //final Button button4 = (Button) findViewById(R.id.button4);
+        floor4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // displayToast("4th Floors");
+                setFourthFloors();
+            }
+        });
+
+        floor5 = (FloatingActionButton)findViewById(R.id.fab_five);
+        //final Button button5 = (Button) findViewById(R.id.button5);
+        floor5.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // displayToast("Floor 5");
+                setFifthFloors();
+            }
+        });
+
+        //for changing button color
+        //changeButtonBackgroundColor(whichFloor);
+
+
+        //now adding the animation to the fab buttons
+        FabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
+        FabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        FabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
+        FabRotateCounter = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_counter_clockwise);
+
+        //fab on click listener
+        plus.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(isOpen)
+                {
+                    base.startAnimation(FabClose);
+                    floor1.startAnimation(FabClose);
+                    floor2.startAnimation(FabClose);
+                    floor3.startAnimation(FabClose);
+                    floor4.startAnimation(FabClose);
+                    floor5.startAnimation(FabClose);
+                    plus.startAnimation(FabRotateCounter);
+                    base.setClickable(false);
+                    floor1.setClickable(false);
+                    floor2.setClickable(false);
+                    floor3.setClickable(false);
+                    floor4.setClickable(false);
+                    floor5.setClickable(false);
+                    isOpen = false;
+                }
+                else
+                {
+                    base.startAnimation(FabOpen);
+                    floor1.startAnimation(FabOpen);
+                    floor2.startAnimation(FabOpen);
+                    floor3.startAnimation(FabOpen);
+                    floor4.startAnimation(FabOpen);
+                    floor5.startAnimation(FabOpen);
+                    plus.startAnimation(FabRotateClockwise);
+                    base.setClickable(true);
+                    floor1.setClickable(true);
+                    floor2.setClickable(true);
+                    floor3.setClickable(true);
+                    floor4.setClickable(true);
+                    floor5.setClickable(true);
+                    isOpen = true;
+                }
+            }
+        });
+
+
+        //Initialize map with first floor layer
+        String firstFloorLines = getString(R.string.firstFloorLineLayer);
+        mFeatureServiceUrl2 = firstFloorLines;
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl2,ArcGISFeatureLayer.MODE.ONDEMAND);
+        mMapView.addLayer(mFeatureLayer);
+
+        //adding the polygon layer
+        String firstFloorPolygons = getString(R.string.firstFloorPolygonLayer);
+        mFeatureServiceUrl = firstFloorPolygons;
+        mFeatureLayer2 = new ArcGISFeatureLayer(mFeatureServiceUrl, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer2);
+
+        whichFloor = 1;
+        changeButtonBackgroundColor(whichFloor);
+
+
+    //***************END BUTTONS **********************//
+
+
+    }//END ONCREATE
+
+    public void onDialogMessage(int boxNum) { //box number of the grid
+        mMapView.removeLayer(mFeatureLayer);
+
+
+        //Map links grid box numbers to url strings
+        Map<Integer, String> gridMap = new HashMap<Integer, String>();
+
+        //set key to strings for the grid buttons
+        gridMap.put(1, this.getResources().getString(R.string.bikeRacks));
+        gridMap.put(2, this.getResources().getString(R.string.parkingDispensers));
+        gridMap.put(3, this.getResources().getString(R.string.disabilityParkingAreas));
+        gridMap.put(4, this.getResources().getString(R.string.informationCenters));
+        gridMap.put(5, this.getResources().getString(R.string.palmDesertShuttle));
+        gridMap.put(6, this.getResources().getString(R.string.emergencyPhones));
+        gridMap.put(7, this.getResources().getString(R.string.restRooms));
+        gridMap.put(8, this.getResources().getString(R.string.vendingMachines));
+        gridMap.put(9, this.getResources().getString(R.string.healthCenter));
+        gridMap.put(10, this.getResources().getString(R.string.atm));
+        gridMap.put(11, this.getResources().getString(R.string.campusEvacuationSites));
+        gridMap.put(12, this.getResources().getString(R.string.dining));
+
+
+        mFeatureServiceUrl = gridMap.get(boxNum);//ex) gridMap.get(2);
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer);
+
+
+    }//END onDIalog
+
+    //*******************Joses Buttons *********************************/
+
+
+    //BEGIN ADDING FLOORS TO MAP
+    public void setBasementFloors(){
+        mMapView.removeLayer(mFeatureLayer);
+        mMapView.removeLayer(mFeatureLayer2);
+        //mMapView.removeLayer(mFeatureLayer3);
+
+        //add the lines layer on top
+        String  basementFloorLines = getString(R.string.basementFloorLineLayer);
+        mFeatureServiceUrl = basementFloorLines;
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl,ArcGISFeatureLayer.MODE.ONDEMAND);
+        mMapView.addLayer(mFeatureLayer);
+
+        //adding the polygon layer
+        String  basementFloorPolygons = getString(R.string.basementFloorPolygonLayer);
+        mFeatureServiceUrl2 = basementFloorPolygons ;
+        mFeatureLayer2 = new ArcGISFeatureLayer(mFeatureServiceUrl2, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer2);
+
+        //now highlight the button
+        whichFloor = 0;
+        changeButtonBackgroundColor(whichFloor);
+
+    }
+
+    //set 1st floors
+    public void setFirstFloors(){
+        mMapView.removeLayer(mFeatureLayer);
+        mMapView.removeLayer(mFeatureLayer2);
+        //mMapView.removeLayer(mFeatureLayer3);
+
+
+        //add the lines layer on top
+        String firstFloorLines = getString(R.string.firstFloorLineLayer);
+        mFeatureServiceUrl2 = firstFloorLines;
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl2,ArcGISFeatureLayer.MODE.ONDEMAND);
+        mMapView.addLayer(mFeatureLayer);
+
+        //adding the polygon layer
+        String firstFloorPolygons = getString(R.string.firstFloorPolygonLayer);
+        mFeatureServiceUrl = firstFloorPolygons;
+        mFeatureLayer2 = new ArcGISFeatureLayer(mFeatureServiceUrl, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer2);
+
+        whichFloor = 1;
+        changeButtonBackgroundColor(whichFloor);
+
+    }//END setFirstFloors()
+
+
+    //set 2nd floors
+    public void setSecondFloors(){
+        mMapView.removeLayer(mFeatureLayer);
+        mMapView.removeLayer(mFeatureLayer2);
+        //mMapView.removeLayer(mFeatureLayer3);
+
+        //add the lines layer on top
+        String secondFloorLines = getString(R.string.secondFloorLineLayer);
+        mFeatureServiceUrl = secondFloorLines;
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl,ArcGISFeatureLayer.MODE.ONDEMAND);
+        mMapView.addLayer(mFeatureLayer);
+
+        //adding the polygon layer
+        String secondFloorPolygons = getString(R.string.secondFloorPolygonLayer);
+        mFeatureServiceUrl2 = secondFloorPolygons;
+        mFeatureLayer2 = new ArcGISFeatureLayer(mFeatureServiceUrl2, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer2);
+
+
+        //now highlight the button
+        whichFloor = 2;
+        changeButtonBackgroundColor(whichFloor);
+
+
+    }//END setSecondFloors()
+
+
+    //set 3rd floors
+    public void setThirdFloors(){
+        mMapView.removeLayer(mFeatureLayer);
+        mMapView.removeLayer(mFeatureLayer2);
+       // mMapView.removeLayer(mFeatureLayer3);
+
+
+
+        //add the lines layer on top
+        String thirdFloorLines = getString(R.string.thirdFloorLineLayer);
+        mFeatureServiceUrl = thirdFloorLines;
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl,ArcGISFeatureLayer.MODE.ONDEMAND);
+        mMapView.addLayer(mFeatureLayer);
+
+        //adding the polygon layer
+        String thirdFloorPolygons = getString(R.string.thirdFloorPolygonLayer);
+        mFeatureServiceUrl2 = thirdFloorPolygons ;
+        mFeatureLayer2 = new ArcGISFeatureLayer(mFeatureServiceUrl2, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer2);
+
+
+        //now highlight the button
+        whichFloor = 3;
+        changeButtonBackgroundColor(whichFloor);
+
+
+    }//END setThirdFloors()
+
+
+    //set 4th floors
+    public void setFourthFloors(){
+        mMapView.removeLayer(mFeatureLayer);
+        mMapView.removeLayer(mFeatureLayer2);
+        //mMapView.removeLayer(mFeatureLayer3);
+
+        //add the lines layer on top
+        String fourthFloorLines = getString(R.string.fourthFloorLineLayer);
+        mFeatureServiceUrl = fourthFloorLines;
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl,ArcGISFeatureLayer.MODE.ONDEMAND);
+        mMapView.addLayer(mFeatureLayer);
+
+        //adding the polygon layer
+        String  fourthFloorPolygons = getString(R.string.fourthFloorPolygonLayer);
+        mFeatureServiceUrl2 = fourthFloorPolygons ;
+        mFeatureLayer2 = new ArcGISFeatureLayer(mFeatureServiceUrl2, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer2);
+
+        //now highlight the button
+        whichFloor = 4;
+        changeButtonBackgroundColor(whichFloor);
+
+    }//END setFourthFloors()
+
+
+    //set 5th floors
+    public void setFifthFloors(){
+        mMapView.removeLayer(mFeatureLayer);
+        mMapView.removeLayer(mFeatureLayer2);
+        //mMapView.removeLayer(mFeatureLayer3);
+
+        //add the lines layer on top
+        String fifthFloorLines = getString(R.string.fifthFloorLineLayer);
+        mFeatureServiceUrl = fifthFloorLines;
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl,ArcGISFeatureLayer.MODE.ONDEMAND);
+        mMapView.addLayer(mFeatureLayer);
+
+        //adding the polygon layer
+        String fifthFloorPolygons = getString(R.string.fifthFloorPolygonLayer);
+        mFeatureServiceUrl2 = fifthFloorPolygons;
+        mFeatureLayer2 = new ArcGISFeatureLayer(mFeatureServiceUrl2, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer2);
+
+
+        //now highlight the button
+        whichFloor = 5;
+        changeButtonBackgroundColor(whichFloor);
+
+    }//END setFifthFloors()
+
+
+    public void changeButtonBackgroundColor(int whatFloor)
+    {
+        //check what floor your in and change the button color to yellow
+        //floor3.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+        switch(whatFloor){
+            case 0:
+                base.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                //set the other colors back to normal
+                floor1.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor2.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor3.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor4.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor5.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                break;
+            case 1:
+                base.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                //set the other colors back to normal
+                floor1.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                floor2.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor3.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor4.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor5.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                break;
+            case 2:
+                base.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                //set the other colors back to normal
+                floor1.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor2.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                floor3.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor4.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor5.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                break;
+            case 3:
+                base.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                //set the other colors back to normal
+                floor1.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor2.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor3.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                floor4.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor5.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                break;
+            case 4:
+                base.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                //set the other colors back to normal
+                floor1.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor2.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor3.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor4.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                floor5.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                break;
+            case 5:
+                base.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                //set the other colors back to normal
+                floor1.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor2.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor3.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor4.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+                floor5.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                break;
+            default:
+                //by default set it to the first floor
+                resetButtonBackgroundColor();
+                break;
+        }
+    }
+
+    //now this will reset the floors and by default highlight
+    //the first floor
+    public void resetButtonBackgroundColor(){
+        base.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        floor1.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        floor2.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        floor3.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        floor4.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        floor5.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+    }
+
+
+
+    //*******************END Joses Buttons *********************************/
+    public void displayToast(String msg){
+
+        Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+        toast.show();
+
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         return true;
+
+        //start
+        //MenuInflater menuInflater = getMenuInflater();
+        //menuInflater.inflate(R.menu.menu_main, menu);
+        //return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override
@@ -186,7 +701,13 @@ public class MainActivity extends AppCompatActivity {
             initSearchView();
             item.setActionView(mSearchView);
             return true;
-        } else if (id == R.id.action_clear) {//action_clear
+        }else if (id == R.id.grid){
+
+            FragmentManager manager = getFragmentManager();
+            Grid gridDialog = new Grid();
+            gridDialog.show(manager, "Grid");
+
+        } else if (id == R.id.action_clear) {
             // Remove all the marker graphics
             if (mMapViewHelper != null) {
                 mMapViewHelper.removeAllGraphics();
@@ -280,6 +801,10 @@ public class MainActivity extends AppCompatActivity {
                 final String address = cursor.getString(indexColumnSuggestion);
                 suggestClickFlag = true;
 
+                //**********Joses Code **********
+                setFloor(address);
+                //**********END Joses Code *********/
+
                 // Find the Location of the suggestion
                 new FindLocationTask(address).execute(address);
 
@@ -290,6 +815,52 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    //*****************JOSES CODE ************************/
+    //function checks for the address the user types and displays a toast message with the
+    // corresponding floor number
+    public void setFloor(String address){
+        for(int i = 0; i < address.length(); i++){
+            //right now we will iterate through the address until the first number if found
+            //the first number will represent which floor level to set the layer to using
+            //setFloors
+            char c = address.charAt(i);
+            if(c == '1'){
+                Toast.makeText(getBaseContext(), "First Floor" , Toast.LENGTH_SHORT ).show();
+                setFirstFloors();
+                break;
+            }
+            else if(c == '2'){
+                Toast.makeText(getBaseContext(), "Second Floor" , Toast.LENGTH_SHORT ).show();
+                setSecondFloors();
+                break;
+            }
+            else if(c == '3'){
+                Toast.makeText(getBaseContext(), "Third Floor" , Toast.LENGTH_SHORT ).show();
+                setThirdFloors();
+                break;
+            }
+            else if(c == '4'){
+                Toast.makeText(getBaseContext(), "Fourth Floor" , Toast.LENGTH_SHORT ).show();
+                setFourthFloors();
+                break;
+            }
+            else if(c == '5'){
+                Toast.makeText(getBaseContext(), "Fifth Floor" , Toast.LENGTH_SHORT ).show();
+                setFifthFloors();
+                break;
+            }
+            else {
+                //if the address the user types in has no floor number
+                Toast.makeText(getBaseContext(), "Sorry invalid suggestion!" , Toast.LENGTH_LONG ).show();
+                break;
+            }
+        }
+        return;
+    }
+
+
+    //**********************END JOSES CODE *************************/
 
     /**
      * Called from search_layout.xml when user presses Search button.
@@ -342,9 +913,9 @@ public class MainActivity extends AppCompatActivity {
             // Create locator using default online geocoding service and tell it
             // to
             // find the given address
-            String url = "http://roomquest.research.cse:6080/arcgis/rest/services/Rooms_CreateAddressLocator/GeocodeServer";
+            //String url = "http://roomquest.research.cse:6080/arcgis/rest/services/Rooms_CreateAddressLocator/GeocodeServer";
             String extern = Environment.getExternalStorageDirectory().getPath();
-            Locator locator = Locator.createOnlineLocator();
+            Locator locator = Locator.createOnlineLocator(url);
             try {
                 results = locator.find(params[0]);
             } catch (Exception e) {
@@ -560,11 +1131,13 @@ public class MainActivity extends AppCompatActivity {
      * @param y Latitude of the place
      * @param address The address of the location
      */
+    //CALLOUT
     protected void displaySearchResult(double x, double y, String address) {
         // Add a marker at the found place. When tapping on the marker, a Callout with the address
         // will be displayed
-        mMapViewHelper.addMarkerGraphic(y, x, LOCATION_TITLE, address, android.R.drawable.ic_menu_myplaces, null, false, 1);
-        mMapView.centerAndZoom(y, x, 14);
+        //mMapViewHelper
+        mMapViewHelper.addMarkerGraphic(y, x, LOCATION_TITLE, address, R.drawable.coyote_mascot, null, false, 1);//was android.R.drawable.ic_menu_myplaces
+        mMapView.centerAndZoom(y, x, 20);
         mSearchView.setQuery(address, true);
         searchClickFlag = false;
         suggestClickFlag = false;
@@ -578,5 +1151,10 @@ public class MainActivity extends AppCompatActivity {
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
     }
+
+
+
+
+
 
 }
