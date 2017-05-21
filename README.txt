@@ -7,3 +7,9 @@ way around the University. It uses the ArcGIS geographic information system, Arc
 
 
 NOTE: if ran without a CSUSB VPN connection, the app won’t display any content. It will only display a streets basemap. 
+
+
+
+To View Source Code: 
+
+Go to /app/src/main/java/roomquest/cse/csusb/edu/roomquest on this git repository. 
