@@ -2,7 +2,7 @@ package roomquest.cse.csusb.edu.roomquest;
 /**
 
  *
- * Modified By: Jose Banuelos, Thomas Saldana
+ * Modified By: Jose Banuelos, Thomas Saldana, Christopher Koenig
  * Date: 6 Feb 17
  *
  */
