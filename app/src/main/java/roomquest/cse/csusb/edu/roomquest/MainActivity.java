@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
 
     //***PLACE SEARCH ***/
-    public String url = "http://roomquest.research.cse:6080/arcgis/rest/services/FirstFloorLocator/GeocodeServer";
+    public String url = "http://roomquest.research.cse:6080/arcgis/rest/services/FirstRoomsLocator2/GeocodeServer";
 
 
 

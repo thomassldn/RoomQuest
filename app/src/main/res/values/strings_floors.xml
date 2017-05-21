@@ -4,33 +4,33 @@
 
     <!--Map Floor URLS -->
     <!--Basements Floor Layers-->
-    <string name="basementFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/144</string>
-    <string name="basementFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/143</string>
+    <string name="basementFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/155</string>
+    <string name="basementFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/154</string>
     <string name="basementFloorLabelLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/</string>
 
     <!--First Floor Layers-->
-    <string name="firstFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/142</string>
-    <string name="firstFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/141</string>
+    <string name="firstFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/153</string>
+    <string name="firstFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/152</string>
     <string name="firstFloorLabelLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/</string>
 
     <!--Second Floor Layers-->
-    <string name="secondFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/140</string>
-    <string name="secondFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/139</string>
+    <string name="secondFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/151</string>
+    <string name="secondFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/150</string>
     <string name="secondFloorLabelLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/</string>
 
     <!--Third Floor Layers-->
-    <string name="thirdFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/138</string>
-    <string name="thirdFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/137</string>
+    <string name="thirdFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/149</string>
+    <string name="thirdFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/148</string>
     <string name="thirdFloorLabelLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/</string>
 
     <!--Fourth Floor Layers-->
-    <string name="fourthFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/136</string>
-    <string name="fourthFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/135</string>
+    <string name="fourthFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/147</string>
+    <string name="fourthFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/146</string>
     <string name="fourthFloorLabelLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/</string>
 
     <!--Fifth Floor Layers-->
-    <string name="fifthFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/134</string>
-    <string name="fifthFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/133</string>
+    <string name="fifthFloorLineLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/145</string>
+    <string name="fifthFloorPolygonLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/144</string>
     <string name="fifthFloorLabelLayer">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/</string>
 
 

@@ -7,10 +7,11 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" >
         <item name="colorPrimary">@color/csusb_blue</item>
-        <item name="colorAccent">@color/csusb_grey</item>
+        <item name="colorAccent">@color/justWhite</item>
         <item name="android:colorBackground">@color/justWhite</item>
         <item name="android:textColorPrimary">@color/justWhite</item>
-        <item name="android:textColorPrimaryInverse">@color/justBlack</item>
+        <item name="android:textColorPrimaryInverse">@color/justWhite</item>
+        <item name="android:colorForeground">@color/white</item>
 
     </style>
 

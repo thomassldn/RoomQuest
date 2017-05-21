@@ -14,7 +14,7 @@
     <string name="noResultsFound">No Results found</string>
     <string name="JB3URL_NEW">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/JB3RDFLOOR/MapServer</string>
     <string name="JB3URL">https://services3.arcgis.com/CapJ1hlMMupAogng/arcgis/rest/services/JB3RDFLOOR/FeatureServer/1</string>
-    <string name="geocodingServiceUrl">http://roomquest.research.cse:6080/arcgis/rest/services/FirstFloorLocator/GeocodeServer</string>
+    <string name="geocodingServiceUrl">http://roomquest.research.cse:6080/arcgis/rest/services/FirstRoomsLocator2/GeocodeServer</string>
 
 
     <!-- Map Grid URLS -->
