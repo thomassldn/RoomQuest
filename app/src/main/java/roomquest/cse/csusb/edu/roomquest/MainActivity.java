@@ -1,3 +1,16 @@
+/* Copyright 2014 ESRI
+*
+* All rights reserved under the copyright laws of the United States
+* and applicable international laws, treaties, and conventions.
+*
+* You may freely redistribute and use this sample code, with or
+* without modification, provided you include the original copyright
+* notice and use restrictions.
+*
+* See the sample code usage restrictions document for further information.
+*
+*/
+
 package roomquest.cse.csusb.edu.roomquest;
 /**
 
@@ -52,6 +65,7 @@ import com.esri.android.map.ags.ArcGISLocalTiledLayer;
 import com.esri.android.map.event.OnSingleTapListener;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.android.toolkit.map.MapViewHelper;
+import com.esri.core.geometry.Envelope;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.Point;
 import com.esri.core.geometry.SpatialReference;
@@ -62,6 +76,27 @@ import com.esri.core.tasks.geocode.LocatorGeocodeResult;
 import com.esri.core.tasks.geocode.LocatorSuggestionParameters;
 import com.esri.core.tasks.geocode.LocatorSuggestionResult;
 import com.esri.core.tasks.na.NAFeaturesAsFeature;
+
+
+//GPS packages
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+//import com.esri.arcgisruntime.mapping.ArcGISMap;
+//import com.esri.arcgisruntime.mapping.Basemap;
+//import com.esri.arcgisruntime.mapping.view.LocationDisplay;
+//import com.esri.arcgisruntime.mapping.view.MapView;
+//import com.esri.arcgisruntime.sample.spinner.ItemData;
+//import com.esri.arcgisruntime.sample.spinner.SpinnerAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -114,29 +149,19 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     // and are displayed on a map via a GraphicsLayer.
     GraphicsLayer mGraphicsLayer = new GraphicsLayer(GraphicsLayer.RenderingMode.DYNAMIC);
 
-    //***********ADDED CODE ***************
 
     MapView mMapView;
-    //final String extern = Environment.getExternalStorageDirectory().getPath();
-    //final String tpkPath = "/ArcGIS/samples/OfflineRouting/SanDiego.tpk";
-
-
-    //GraphicsLayer mGraphicsLayer = new GraphicsLayer(GraphicsLayer.RenderingMode.DYNAMIC);
-
-    // RouteTask mRouteTask = null;
-    //NAFeaturesAsFeature mStops = new NAFeaturesAsFeature();
 
     Locator mLocator = null;
-    // View mCallout = null;
-    //Spinner dSpinner;
 
-    //***********END ADDED CODE ***************
+
+
 
 
     //***PLACE SEARCH ***/
-    public String url = "http://roomquest.research.cse:6080/arcgis/rest/services/FirstRoomsLocator2/GeocodeServer";
+    //public String url = getString(R.string.geocodingServiceUrl);
 
-
+    public String url = "http://roomquest.research.cse:6080/arcgis/rest/services/FirstRoomsTestLoc/GeocodeServer";
 
 
 
@@ -171,10 +196,11 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     //declaring the floating action button variables
     FloatingActionButton plus, base, floor1, floor2, floor3, floor4, floor5;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounter;
-
-
-
     boolean isOpen;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,6 +231,14 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         // Create the default ArcGIS online Locator. If you want to provide your own {@code Locator},
         // user other methods of Locator.
 
+
+
+
+        //Map Extend
+        //Envelope myExtents = new Envelope(34, 117,28,-117.312285);//(343598,5241389,678995,3464320)(xmin,ymin,xmax,ymax)
+        //myExtents = (Envelope) GeometryEngine.project(myExtents, SpatialReference.create(102100), mMapView.getSpatialReference());
+        //mMapView.setMaxExtent(myExtents);
+        //mMapView.setExtent(myExtents);
 
         String extern = Environment.getExternalStorageDirectory().getPath();
         mLocator = Locator.createOnlineLocator(url);
@@ -398,6 +432,8 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
 
     }//END ONCREATE
+
+
 
     public void onDialogMessage(int boxNum) { //box number of the grid
         mMapView.removeLayer(mFeatureLayer);
@@ -707,13 +743,13 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
             Grid gridDialog = new Grid();
             gridDialog.show(manager, "Grid");
 
-        } else if (id == R.id.action_clear) {
+        } //else if (id == R.id.action_clear) {
             // Remove all the marker graphics
-            if (mMapViewHelper != null) {
-                mMapViewHelper.removeAllGraphics();
-            }
-            return true;
-        }
+            //if (mMapViewHelper != null) {
+              //  mMapViewHelper.removeAllGraphics();
+            //}
+            //return true;
+        //}
 
         return super.onOptionsItemSelected(item);
     }
@@ -852,7 +888,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
             }
             else {
                 //if the address the user types in has no floor number
-                Toast.makeText(getBaseContext(), "Sorry invalid suggestion!" , Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getBaseContext(), "Sorry invalid suggestion!" , Toast.LENGTH_LONG ).show();
                 break;
             }
         }
@@ -954,6 +990,10 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                 // Get the address
                 String address = geocodeResult.getAddress();
 
+                // Remove all the marker graphics before setting new marker
+                if (mMapViewHelper != null) {
+                 mMapViewHelper.removeAllGraphics();
+                }
                 // Display the result on the map
                 displaySearchResult(x,y,address);
                 hideKeyboard();
@@ -1008,8 +1048,13 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
             if (resultPoint == null)
                 return;
 
+            // Remove all the marker graphics before setting new marker
+            if (mMapViewHelper != null) {
+                mMapViewHelper.removeAllGraphics();
+            }
             // Display the result
             displaySearchResult(resultPoint.getX(), resultPoint.getY(), resultAddress);
+
             hideKeyboard();
         }
 
