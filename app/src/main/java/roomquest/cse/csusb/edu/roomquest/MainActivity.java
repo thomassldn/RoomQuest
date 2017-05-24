@@ -77,27 +77,6 @@ import com.esri.core.tasks.geocode.LocatorSuggestionParameters;
 import com.esri.core.tasks.geocode.LocatorSuggestionResult;
 import com.esri.core.tasks.na.NAFeaturesAsFeature;
 
-
-//GPS packages
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.Toast;
-
-//import com.esri.arcgisruntime.mapping.ArcGISMap;
-//import com.esri.arcgisruntime.mapping.Basemap;
-//import com.esri.arcgisruntime.mapping.view.LocationDisplay;
-//import com.esri.arcgisruntime.mapping.view.MapView;
-//import com.esri.arcgisruntime.sample.spinner.ItemData;
-//import com.esri.arcgisruntime.sample.spinner.SpinnerAdapter;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
