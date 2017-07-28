@@ -55,12 +55,14 @@ public class Grid extends DialogFragment implements View.OnClickListener{
         View  view = inflater.inflate(R.layout.grid,null);
         //set title on dialogFrag
         //getDialog().setTitle("Menu");
-       // getDialog().setTitle(Html.fromHtml("<font color = '#ffffff'> Menu </font>"));
-       // int dividerId = getDialog().getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+       //getDialog().setTitle(Html.fromHtml("<font color = '#ffffff'> Menu </font>"));
+       //int dividerId = getDialog().getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
         //View divider = getDialog().findViewById(dividerId);
         //divider.setBackgroundColor(getResources().getColor(R.color.justWhite));
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
+
+        setCancelable(false);//prevents user from canceling the grid
 
         one = (Button) view.findViewById(R.id.grid_button_one);
         one.setOnClickListener(this);
@@ -85,7 +87,6 @@ public class Grid extends DialogFragment implements View.OnClickListener{
 
         eight = (Button) view.findViewById(R.id.grid_button_eight);
         eight.setOnClickListener(this);
-
         nine = (Button) view.findViewById(R.id.grid_button_nine);
         nine.setOnClickListener(this);
 
@@ -99,7 +100,7 @@ public class Grid extends DialogFragment implements View.OnClickListener{
         twelve.setOnClickListener(this);
 
 
-        setCancelable(true);//prevents user from canceling the grid
+
 
 
 

@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <!-- Parent -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".4">
+
+        </LinearLayout>
+
+
+        <!-- Row 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!-- Row 1 Box 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_one"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_bikeracks"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Bicycle Racks"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <!-- Row 1 Box 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_two"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_parking"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Parking Permit Dispensers"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+
+            <!-- Row 1 Box 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_three"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_wheelchair"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Disability/Medical Parking Areas"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+        <!-- Row 2  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!-- Row 2 Box 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_four"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_questionmark"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_four"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Information Center (IC)"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+            <!-- Row 2 Box 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_five"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_transportation"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_five"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Palm Desert Campus Shuttle"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+            <!-- Row 2 Box 3 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_six"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_phone"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_six"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Emergency Phones"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+        <!-- Row 3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+            <!-- Row 3 Box 3-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_seven"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_restrooms"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_seven"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Restrooms"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+            <!-- Row 3 Box 2-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_eight"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_ev_charging_station"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_eight"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "EV Charging Stations"
+                    android:textColor="@color/justWhite"
+                    />
+
+
+            </LinearLayout>
+
+            <!-- Row 3 Box 3-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_nine"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+
+                        android:background="@drawable/icon_healthcenter"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_nine"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Health Center"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+
+
+        <!-- Row 4 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!-- Row 4 Box 1-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_ten"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_atm"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_ten"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "ATM"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+            <!-- Row 4 Box 2-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_eleven"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_evacuationsites"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_eleven"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Campus Evacuation Sites"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+            <!-- Row 4 Box 3-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7">
+
+
+                    <Button
+                        android:id="@+id/grid_button_twelve"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:padding="20dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/icon_dining"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_twelve"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity = "center"
+                    android:layout_weight="3"
+                    android:background="@color/justblackopacy"
+                    android:scaleType="fitXY"
+                    android:text= "Dining"
+                    android:textColor="@color/justWhite"
+
+
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!-- EOL -->
+    </LinearLayout>
+
+
+
+</RelativeLayout>
