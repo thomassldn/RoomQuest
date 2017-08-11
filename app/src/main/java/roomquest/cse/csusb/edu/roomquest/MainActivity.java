@@ -80,6 +80,7 @@ import com.esri.core.geometry.SpatialReference;
 import com.esri.core.map.CallbackListener;
 import com.esri.core.map.CodedValueDomain;
 import com.esri.core.map.Field;
+import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.esri.core.tasks.geocode.Locator;
 import com.esri.core.tasks.geocode.LocatorFindParameters;
 import com.esri.core.tasks.geocode.LocatorGeocodeResult;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     private static final String COLUMN_NAME_ADDRESS = "address";
     private static final String COLUMN_NAME_X = "x";
     private static final String COLUMN_NAME_Y = "y";
-    private static final String LOCATION_TITLE = "";//was location
+    private static final String LOCATION_TITLE = "LOCATION";//was location
 
     private static final String FIND_PLACE = "Find";
     private static final String SUGGEST_PLACE = "Suggest";
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
     //***PLACE SEARCH ***/
     //public String url = getString(R.string.geocodingServiceUrl);
-    public String url = "https://roomquest.cse.csusb.edu:6080/arcgis/rest/services/CampusLocator/GeocodeServer";
+    public String url = "http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/FirstRoomsLocator/GeocodeServer";
 
 
 
@@ -193,30 +194,32 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     //to display the annotation layers from ArcGIS server that contain the labels for each floor
     //an ArcGISDynamicMapServiceLayer is needed
     ArcGISDynamicMapServiceLayer dynamicMapServiceLayer;
-
-    int[] layerId5 = {189,178,177,156};
-    int[] layerId4 = {189,180,179,156};
-    int[] layerId3 = {189,182,181,156};
-    int[] layerId2 = {189,184,183,156};
-    int[] layerId  = {189,186,185,156};
-    int[] layerId0 = {189,188,187,156};
-
-
-    int[] bikeRacks               = {189,186,185,158,156};
-    int[] parkingDispensers       = {189,186,185,159,156};
-    int[] disabilityParkingAreas  = {189,186,185,160,156};
-    int[] informationCenters      = {189,186,185,161,156};
-    int[] palmDesertShuttle       = {189,186,185,162,156};
-    int[] emergencyPhones         = {189,186,185,163,156};
-    int[] restRooms               = {189,186,185,164,156};
-    int[] evchargingstations      = {189,186,185,165,156};
-    int[] healthCenter            = {189,186,185,166,156};
-    int[] atm                     = {189,186,185,167,156};
-    int[] campusEvacuationSites   = {189,186,185,168,156};
-    int[] dining                  = {189,186,185,170,156};
+    //Format:
+    //int[] layer  = {RoofsLayer,FloorsLayer,RoomsLayer,AnnotationLayer}
+    int[] layerId5 = {45,34,33,1};
+    int[] layerId4 = {45,36,35,3};
+    int[] layerId3 = {45,38,37,5};
+    int[] layerId2 = {45,40,39,6};
+    int[] layerId  = {45,42,41,8};
+    int[] layerId0 = {45,44,43,10};
 
 
 
+    int[] bikeRacks               = {45,38,37,5,14};
+    int[] parkingDispensers       = {45,38,37,5,15};
+    int[] disabilityParkingAreas  = {45,38,37,5,16};
+    int[] informationCenters      = {45,38,37,5,17};
+    int[] palmDesertShuttle       = {45,38,37,5,18};
+    int[] emergencyPhones         = {45,38,37,5,19};
+    int[] restRooms               = {45,38,37,5,20};
+    int[] evchargingstations      = {45,38,37,5,21};
+    int[] healthCenter            = {45,38,37,5,22};
+    int[] atm                     = {45,38,37,5,23};
+    int[] campusEvacuationSites   = {45,38,37,5,24};
+    int[] dining                  = {45,38,37,5,26};
+
+
+    //public String address;
 
 
     @Override
@@ -247,12 +250,11 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
 
         String extern = Environment.getExternalStorageDirectory().getPath();
-        mLocator = Locator.createOnlineLocator(url);
-        //mLocator = Locator.createOnlineLocator();
+        mLocator = Locator.createOnlineLocator(url);//url
 
         // set logo and enable wrap around
-        mMapView.setEsriLogoVisible(true);
-        mMapView.enableWrapAround(true);
+        //mMapView.setEsriLogoVisible(false);
+        //mMapView.enableWrapAround(false);
 
         // Setup listener for map initialized
         mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
@@ -274,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
 
 
-        //**********Campus Code Starts Here**********
+
 
         // Set the MapView to allow the user to rotate the map when as part of a pinch gesture.
         mMapView.setAllowRotationByPinch(true);
@@ -420,7 +422,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
         //Initializing Map with Campus Extend
         //Envelope myExtents = new Envelope(-13061415.588940706,4052665.227615348,-13059240.709590949,4054092.392969663);//(xmin,ymin,xmax,ymax)
-        //Envelope myExtents = new Envelope(-13061204.869942876,4052820.908760037,-13059404.376758555,4053937.452659792);//(
+        //NOTTHISONEEnvelope myExtents = new Envelope(-13061204.869942876,4052820.908760037,-13059404.376758555,4053937.452659792);//(
         //myExtents = (Envelope) GeometryEngine.project(myExtents, SpatialReference.create(102100), mMapView.getSpatialReference());
         //mMapView.setMaxExtent(myExtents);
         //mMapView.setMaxScale(500);
@@ -439,6 +441,12 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
         dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),layerId);
         mMapView.addLayer(dynamicMapServiceLayer);
+
+        /*
+        mFeatureServiceUrl = "http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/42";//set all floors in the basement level, one by one
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer);
+        */
 
     //***************END BUTTONS Code **********************//
         // Request GPS Permission
@@ -650,6 +658,13 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),layerId);
         mMapView.addLayer(dynamicMapServiceLayer);
 
+  /*
+        mMapView.removeLayer(mFeatureLayer);
+
+        mFeatureServiceUrl = "http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/42";//set all floors in the basement level, one by one
+        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
+        mMapView.addLayer(mFeatureLayer);
+*/
 
         whichFloor = 1;
         changeButtonBackgroundColor(whichFloor);
@@ -675,11 +690,11 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
     //set 3rd floors
     public void setThirdFloors(){
+
         //code with the labels
         mMapView.removeLayer(dynamicMapServiceLayer);
         dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),layerId3);
         mMapView.addLayer(dynamicMapServiceLayer);
-
 
         //now highlight the button
         whichFloor = 3;
@@ -798,6 +813,52 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     }
 
 
+    //function checks for the address the user types and displays a toast message with the
+    // corresponding floor number
+    public void setFloor(String address){
+
+        for(int i = 0; i < address.length(); i++){
+            //iterate through the address until the first number is found
+            //the first number will represent which floor level to set the layer to using
+            //setFloors
+            char choice = address.charAt(i);
+
+            if(choice == '0'){
+                Toast.makeText(getBaseContext(), "Basement" , Toast.LENGTH_SHORT ).show();
+                setBasementFloors();
+                break;
+            } else if(choice == '1'){
+                Toast.makeText(getBaseContext(), "First Floor" , Toast.LENGTH_SHORT ).show();
+                setFirstFloors();
+                break;
+            } else if(choice == '2'){
+                Toast.makeText(getBaseContext(), "Second Floor" , Toast.LENGTH_SHORT ).show();
+                setSecondFloors();
+                break;
+            } else if(choice == '3'){
+                Toast.makeText(getBaseContext(), "Third Floor" , Toast.LENGTH_SHORT ).show();
+                setThirdFloors();
+                break;
+            } else if(choice == '4'){
+                Toast.makeText(getBaseContext(), "Fourth Floor" , Toast.LENGTH_SHORT ).show();
+                setFourthFloors();
+                break;
+            } else if(choice == '5'){
+                Toast.makeText(getBaseContext(), "Fifth Floor" , Toast.LENGTH_SHORT ).show();
+                setFifthFloors();
+                break;
+            } else {
+                //if the address the user types in has no floor number
+                //Toast.makeText(getBaseContext(), "Sorry invalid suggestion!" , Toast.LENGTH_LONG ).show();
+                //break;
+            }
+        }
+        //show the buttons to know which floor one is in
+
+        return;
+    }
+
+
 
     public void displayToast(String msg){
 
@@ -900,6 +961,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 if(!suggestClickFlag && !searchClickFlag) {
                     searchClickFlag = true;
                     onSearchButtonClicked(query);
@@ -931,9 +993,10 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                 MatrixCursor cursor = (MatrixCursor) mSearchView.getSuggestionsAdapter().getItem(position);
                 int indexColumnSuggestion = cursor.getColumnIndex(COLUMN_NAME_ADDRESS);
                 final String address = cursor.getString(indexColumnSuggestion);
+
                 suggestClickFlag = true;
 
-                setFloor(address);
+
 
                 // Find the Location of the suggestion
                 new FindLocationTask(address).execute(address);
@@ -945,66 +1008,27 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         });
     }
 
-    //function checks for the address the user types and displays a toast message with the
-    // corresponding floor number
-    public void setFloor(String address){
-
-        for(int i = 0; i < address.length(); i++){
-            //iterate through the address until the first number is found
-            //the first number will represent which floor level to set the layer to using
-            //setFloors
-            char choice = address.charAt(i);
-
-            if(choice == '0'){
-                Toast.makeText(getBaseContext(), "Basement" , Toast.LENGTH_SHORT ).show();
-                setBasementFloors();
-                break;
-            } else if(choice == '1'){
-                Toast.makeText(getBaseContext(), "First Floor" , Toast.LENGTH_SHORT ).show();
-                setFirstFloors();
-                break;
-            } else if(choice == '2'){
-                Toast.makeText(getBaseContext(), "Second Floor" , Toast.LENGTH_SHORT ).show();
-                setSecondFloors();
-                break;
-            } else if(choice == '3'){
-                Toast.makeText(getBaseContext(), "Third Floor" , Toast.LENGTH_SHORT ).show();
-                setThirdFloors();
-                break;
-            } else if(choice == '4'){
-                Toast.makeText(getBaseContext(), "Fourth Floor" , Toast.LENGTH_SHORT ).show();
-                setFourthFloors();
-                break;
-            } else if(choice == '5'){
-                Toast.makeText(getBaseContext(), "Fifth Floor" , Toast.LENGTH_SHORT ).show();
-                setFifthFloors();
-                break;
-            } else {
-                //if the address the user types in has no floor number
-                //Toast.makeText(getBaseContext(), "Sorry invalid suggestion!" , Toast.LENGTH_LONG ).show();
-                //break;
-            }
-        }
-        //show the buttons to know which floor one is in
-
-        return;
-    }
-
-
-    //**********************END JOSES CODE *************************/
 
     /**
      * Called from search_layout.xml when user presses Search button.
      *
      * @param address The text in the searchbar to be geocoded
      */
+
+    public void onSearchButtonClicked(String address) {
+        hideKeyboard();
+        setFloor(address);
+
+        //mMapViewHelper.removeAllGraphics();
+        executeLocatorTask(address);
+    }
+    /*
     public void onSearchButtonClicked(String address) {
         hideKeyboard();
         mMapViewHelper.removeAllGraphics();
         searchClickFlag = true;
         searchMiss = true;
 
-        setFloor(address);
 
         new FindLocationTask(address).execute(address);
 
@@ -1014,9 +1038,9 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                 invalidateOptionsMenu();
             }
         }
-        //executeLocatorTask(address);
+        executeLocatorTask(address);//This line was commented 
     }
-
+*/
     private void executeLocatorTask(String address) {
 
         //Create Locator parameters from single line address string
@@ -1034,8 +1058,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
        * background thread and displays the first result on the map on the UI
        * thread.
        */
-    private class LocatorAsyncTask extends
-            AsyncTask<LocatorFindParameters, Void, List<LocatorGeocodeResult>> {
+    private class LocatorAsyncTask extends AsyncTask<LocatorFindParameters, Void, List<LocatorGeocodeResult>> {
 
         private Exception mException;
 
@@ -1058,9 +1081,10 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
             // Create locator using default online geocoding service and tell it
             // to
             // find the given address
-            //String url = "http://roomquest.research.cse:6080/arcgis/rest/services/Rooms_CreateAddressLocator/GeocodeServer";
-            String extern = Environment.getExternalStorageDirectory().getPath();
-            Locator locator = Locator.createOnlineLocator(url);
+
+            Locator locator = Locator.createOnlineLocator(url);//url
+
+
             try {
                 results = locator.find(params[0]);
             } catch (Exception e) {
@@ -1099,11 +1123,6 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                 // Get the address
                 String address = geocodeResult.getAddress();
 
-                // Remove all the marker graphics before setting new marker
-                if (mMapViewHelper != null) {
-                 mMapViewHelper.removeAllGraphics();
-                }
-
                 // Display the result on the map
                 displaySearchResult(x,y,address);
                 hideKeyboard();
@@ -1122,6 +1141,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         private Point temp = null;
 
         public FindLocationTask(String address) {
+
             resultAddress = address;
         }
 
@@ -1290,12 +1310,20 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
      */
     //CALLOUT
     protected void displaySearchResult(double x, double y, String address) {
+
+        //The following line, sets the correct floor on the map
+        setFloor(address);
+
+
         // Add a marker at the found place. When tapping on the marker, a Callout with the address
         // will be displayed
-        //mMapViewHelper
         mMapViewHelper.addMarkerGraphic(y, x, LOCATION_TITLE, address, R.drawable.coyote_mascot,getResources().getDrawable(R.drawable.coyote_paw) , false, 1);//was android.R.drawable.ic_menu_myplaces
+
+
+
         mMapView.centerAndZoom(y, x, 20);
         mSearchView.setQuery(address, true);
+
         searchClickFlag = false;
         suggestClickFlag = false;
 

@@ -15,7 +15,7 @@
     <string name="JB3URL_NEW">http://roomquest.research.cse.csusb.edu:6080/arcgis/rest/services/JB3RDFLOOR/MapServer</string>
     <string name="JB3URL">https://services3.arcgis.com/CapJ1hlMMupAogng/arcgis/rest/services/JB3RDFLOOR/FeatureServer/1</string>
     <string name="location_permission_denied">LocationDisplayManager cannot run because location permission was denied</string>
-    <string name="geocodingServiceUrl">https://roomquest.cse.csusb.edu:6080/arcgis/rest/services/CampusLocator/GeocodeServer</string>
+    <string name="geocodingServiceUrl">http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/FirstRoomsLocator/GeocodeServer</string>
     <string name="MapServer">http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer</string>
 
 
