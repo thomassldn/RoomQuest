@@ -13,15 +13,12 @@
 
 package roomquest.cse.csusb.edu.roomquest;
 /**
-
  *
  * Modified By: Jose Banuelos, Thomas Saldana, Christopher Koenig
  * Date: 6 Feb 17
  *
  */
 import android.Manifest;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -37,7 +34,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -46,57 +42,39 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.SearchView.OnSuggestionListener;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.esri.android.map.FeatureLayer;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
-import com.esri.android.map.MapOptions;
 import com.esri.android.map.MapView;
-import com.esri.android.map.TiledLayer;
 import com.esri.android.map.ags.ArcGISDynamicMapServiceLayer;
-import com.esri.android.map.ags.ArcGISFeatureLayer;
-import com.esri.android.map.ags.ArcGISLocalTiledLayer;
 import com.esri.android.map.event.OnSingleTapListener;
 import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.android.runtime.ArcGISRuntime;
 import com.esri.android.toolkit.map.MapViewHelper;
-import com.esri.core.geodatabase.GeodatabaseFeatureServiceTable;
 import com.esri.core.geometry.Envelope;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.Point;
 import com.esri.core.geometry.SpatialReference;
 import com.esri.core.map.CallbackListener;
-import com.esri.core.map.CodedValueDomain;
-import com.esri.core.map.Field;
-import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.esri.core.tasks.geocode.Locator;
 import com.esri.core.tasks.geocode.LocatorFindParameters;
 import com.esri.core.tasks.geocode.LocatorGeocodeResult;
 import com.esri.core.tasks.geocode.LocatorSuggestionParameters;
 import com.esri.core.tasks.geocode.LocatorSuggestionResult;
-import com.esri.core.tasks.na.RouteResult;
-import com.esri.core.tasks.na.RouteTask;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
+
 
 import roomquest.cse.csusb.edu.roomquest.Compass.Compass.Compass;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 /**
  * PlaceSearch app uses the geocoding service to convert addresses to and from
@@ -118,12 +96,10 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     private static final String SUGGEST_PLACE = "Suggest";
     private static boolean suggestClickFlag = false;
     private static boolean searchClickFlag = false;
-
-
     private String mMapViewState;
+
     // Entry point to ArcGIS for Android Toolkit
     private MapViewHelper mMapViewHelper;
-
 
     private SearchView mSearchView;
     private MenuItem searchMenuItem;
@@ -136,38 +112,19 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     private SpatialReference mapSpatialReference;
     private static ArrayList<LocatorSuggestionResult> suggestionsList;
 
-
-
     //Graphics are objects held in memory that store a shape (geometry)
     // and are displayed on a map via a GraphicsLayer.
     GraphicsLayer mGraphicsLayer = new GraphicsLayer(GraphicsLayer.RenderingMode.DYNAMIC);
-
-
     MapView mMapView;
-
     Locator mLocator = null;
 
-
-
-
     //***PLACE SEARCH ***/
-    //public String url = getString(R.string.geocodingServiceUrl);
     public String url = "http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/FirstRoomsLocator/GeocodeServer";
-
-
-
-    public ArcGISFeatureLayer mFeatureLayer;//leave
-    public ArcGISFeatureLayer mFeatureLayer2;
-    public ArcGISFeatureLayer mFeatureLayer3;
-    public String mFeatureServiceUrl;//leave
-    public String mFeatureServiceUrl2;
-    public String mFeatureServiceUrl3;
 
     //for changing button color
     //default set it to the first floor
     public int whichFloor;
     private static boolean searchMiss = true;
-
 
     //Initialization of compass object
     Compass mCompass;
@@ -182,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     public LocationManager manager;
     LocationDisplayManager ldm;
     public static Point mLocation = null;
-    final SpatialReference wm = SpatialReference.create(102100);
-    final SpatialReference egs = SpatialReference.create(4326);
 
     //Request GPS
     private int requestCode = 2;
@@ -203,11 +158,10 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     int[] layerId  = {45,42,41,8};
     int[] layerId0 = {45,44,43,10};
 
-
-
+    //Grid Layers
     int[] bikeRacks               = {45,38,37,5,14};
     int[] parkingDispensers       = {45,38,37,5,15};
-    int[] disabilityParkingAreas  = {45,38,37,5,16};
+    int[] disabilityParkingAreas  = {45,38,37,52,16};
     int[] informationCenters      = {45,38,37,5,17};
     int[] palmDesertShuttle       = {45,38,37,5,18};
     int[] emergencyPhones         = {45,38,37,5,19};
@@ -218,10 +172,6 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     int[] campusEvacuationSites   = {45,38,37,5,24};
     int[] dining                  = {45,38,37,5,26};
 
-
-    //public String address;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -230,9 +180,9 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         //start
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setLogo(R.drawable.coyote_head);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-
+        ArcGISRuntime.setClientId("nVzh9JCohNTXQOfu");
+        actionBar.setDisplayUseLogoEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
 
         // Setup and show progress dialog
         mProgressDialog = new ProgressDialog(this) {
@@ -248,13 +198,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         // Initialize the helper class to use the Toolkit
         mMapViewHelper = new MapViewHelper(mMapView);
 
-
-        String extern = Environment.getExternalStorageDirectory().getPath();
         mLocator = Locator.createOnlineLocator(url);//url
-
-        // set logo and enable wrap around
-        //mMapView.setEsriLogoVisible(false);
-        //mMapView.enableWrapAround(false);
 
         // Setup listener for map initialized
         mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
@@ -268,15 +212,9 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                     } else {
                         mMapView.restoreState(mMapViewState);
                     }
-
                 }
             }
         });
-
-
-
-
-
 
         // Set the MapView to allow the user to rotate the map when as part of a pinch gesture.
         mMapView.setAllowRotationByPinch(true);
@@ -307,35 +245,26 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         //adding the fab_plus button
         plus = (FloatingActionButton)findViewById(R.id.plus);
         base = (FloatingActionButton)findViewById(R.id.fab_basement);
-        //the button ids were changed to the fab_button ids
-        //final Button buttonb = (Button) findViewById(R.id.fab_basement);
         base.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // displayToast("Basements");
-                //base.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_coloring));
-                //base.setBackground(getResources().getDrawable(R.drawable.button_coloring));
-                //base.setVisibility(View.INVISIBLE);
-
+                displayToast("Basements");
                 setBasementFloors();
 
             }
         });
 
         floor1 = (FloatingActionButton)findViewById(R.id.fab_first);
-        //final Button button1 = (Button) findViewById(R.id.fab_first);
         floor1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // displayToast("1st Floors");
+                displayToast("1st Floors");
                 setFirstFloors();
-                //button1.setBackgroundColor(getResources().getColor(R.color.yellow));
             }
         });
 
         floor2 = (FloatingActionButton)findViewById(R.id.fab_second);
-        //final Button button2 = (Button) findViewById(R.id.fab_second);
         floor2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // displayToast("2nd Floors");
+                displayToast("2nd Floors");
                 setSecondFloors();
             }
         });
@@ -344,33 +273,26 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         //final Button button3 = (Button) findViewById(R.id.fab_third);
         floor3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // displayToast("3rd Floors");
-                // floor3.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                displayToast("3rd Floors");
                 setThirdFloors();
             }
         });
 
         floor4 = (FloatingActionButton)findViewById(R.id.fab_fourth);
-        //final Button button4 = (Button) findViewById(R.id.button4);
         floor4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // displayToast("4th Floors");
+                displayToast("4th Floors");
                 setFourthFloors();
             }
         });
 
         floor5 = (FloatingActionButton)findViewById(R.id.fab_five);
-        //final Button button5 = (Button) findViewById(R.id.button5);
         floor5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // displayToast("Floor 5");
+                displayToast("5th Floors");
                 setFifthFloors();
             }
         });
-
-        //for changing button color
-        //changeButtonBackgroundColor(whichFloor);
-
 
         //now adding the animation to the fab buttons
         FabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
@@ -418,226 +340,28 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                 }
             }
         });
-
+        //****************END BUTTONS CODE  ***********************
 
         //Initializing Map with Campus Extend
-        //Envelope myExtents = new Envelope(-13061415.588940706,4052665.227615348,-13059240.709590949,4054092.392969663);//(xmin,ymin,xmax,ymax)
-        //NOTTHISONEEnvelope myExtents = new Envelope(-13061204.869942876,4052820.908760037,-13059404.376758555,4053937.452659792);//(
-        //myExtents = (Envelope) GeometryEngine.project(myExtents, SpatialReference.create(102100), mMapView.getSpatialReference());
-        //mMapView.setMaxExtent(myExtents);
-        //mMapView.setMaxScale(500);
-        //mMapView.setMinScale(20000);
+        Envelope myExtents = new Envelope(-13061415.588940706,4052665.227615348,-13059240.709590949,4054092.392969663);//(xmin,ymin,xmax,ymax)
+        myExtents = (Envelope) GeometryEngine.project(myExtents, SpatialReference.create(102100), mMapView.getSpatialReference());
+        mMapView.setMaxExtent(myExtents);
+        mMapView.setMaxScale(600);
+        mMapView.setMinScale(20000);
 
-
-        /*Map extends
-        xmin=-13061415.588940706
-        ymin=4052665.227615348
-        xmax=-13059240.709590949
-        ymax=4054092.392969663
-        */
-
+        //set the intial button color to be grey on button1
         whichFloor = 1;
         changeButtonBackgroundColor(whichFloor);
 
         dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),layerId);
         mMapView.addLayer(dynamicMapServiceLayer);
 
-        /*
-        mFeatureServiceUrl = "http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/42";//set all floors in the basement level, one by one
-        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
-        mMapView.addLayer(mFeatureLayer);
-        */
-
-    //***************END BUTTONS Code **********************//
         // Request GPS Permission
         ActivityCompat.requestPermissions(MainActivity.this, reqPermissions, requestCode);
 
-
-
 }//END ONCREATE
 
-    //GPS
-    //Permision for GPS
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // If request is cancelled, the result arrays are empty.
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // Location permission was granted. This would have been triggered in response to failing to start the
-            // LocationDisplay, so try starting this again.
-            //initialize Routing
-            manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            //if users gps is not enabled, let them know
-            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                buildAlertMessageNoGps();
-            }
-
-            //displayLocation Code
-            //initialize Routing
-            mGraphicsLayer = new GraphicsLayer();
-            manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            //if users gps is not enabled, let them know
-            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                buildAlertMessageNoGps();
-            }
-
-            // Get the location display manager and start reading location. Don'
-            //auto-pan
-            // to center our position
-            ldm = mMapView.getLocationDisplayManager();
-            ldm.setLocationListener(new MyLocationListener());
-            ldm.start();
-            ldm.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
-
-        } else {
-            // If permission was denied, show toast to inform user what was chosen. If LocationDisplay is started again,
-            // request permission UX will be shown again, option should be shown to allow never showing the UX again.
-            // Alternative would be to disable functionality so request is not shown again.
-            Toast.makeText(MainActivity.this, getResources().getString(R.string.location_permission_denied), Toast
-                    .LENGTH_SHORT).show();
-
-
-        }
-    }
-
-
-    /**
-     * If GPS is disabled, app won't be able to route. Hence display a dialoge window to enable the GPS
-     */
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Please enable your GPS before proceeding")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-
-
-    private class MyLocationListener implements LocationListener {
-
-        public MyLocationListener() {
-            super();
-        }
-
-        /**
-         * If location changes, update our current location. If being found for
-         * the first time, zoom to our current position with a resolution of 20
-         */
-        public void onLocationChanged(Location loc) {
-            if (loc == null)
-                return;
-            boolean zoomToMe = (mLocation == null);
-            mLocation = new Point(loc.getLongitude(), loc.getLatitude());
-            if (zoomToMe) {
-                Point p = (Point) GeometryEngine.project(mLocation, egs, wm);
-                mMapView.zoomToResolution(p, 20.0);
-            }
-        }
-
-        public void onProviderDisabled(String provider) {
-            Toast.makeText(getApplicationContext(), "GPS Disabled",
-                    Toast.LENGTH_SHORT).show();
-            buildAlertMessageNoGps();
-        }
-
-        public void onProviderEnabled(String provider) {
-            Toast.makeText(getApplicationContext(), "GPS Enabled",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-    }
-    //END GPS
-
-
-    public void onDialogMessage(int boxNum) { //box number of the grid
-
-
-        switch(boxNum){
-            case 1:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),bikeRacks);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 2:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),parkingDispensers);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 3:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),disabilityParkingAreas);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 4:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),informationCenters);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 5:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),palmDesertShuttle);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 6:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),emergencyPhones);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 7:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),restRooms);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 8:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),evchargingstations);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 9:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),healthCenter);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 10:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),atm);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 11:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),campusEvacuationSites);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            case 12:
-                mMapView.removeLayer(dynamicMapServiceLayer);
-                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),dining);
-                mMapView.addLayer(dynamicMapServiceLayer);
-                break;
-            default:
-                //by default set it to the first floor
-                resetButtonBackgroundColor();
-                break;
-        }
-
-
-
-
-
-
-    }//END onDIalog
-
-
-
-
-    //BEGIN ADDING FLOORS TO MAP
+    //Code for the Buttons Begins Here
     public void setBasementFloors(){
 
         mMapView.removeLayer(dynamicMapServiceLayer);
@@ -653,24 +377,14 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     //set 1st floors
     public void setFirstFloors(){
 
-
         mMapView.removeLayer(dynamicMapServiceLayer);
         dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),layerId);
         mMapView.addLayer(dynamicMapServiceLayer);
-
-  /*
-        mMapView.removeLayer(mFeatureLayer);
-
-        mFeatureServiceUrl = "http://roomquest.cse.csusb.edu:6080/arcgis/rest/services/SecondPrototype/MapServer/42";//set all floors in the basement level, one by one
-        mFeatureLayer = new ArcGISFeatureLayer(mFeatureServiceUrl, ArcGISFeatureLayer.MODE.ONDEMAND);//leave
-        mMapView.addLayer(mFeatureLayer);
-*/
 
         whichFloor = 1;
         changeButtonBackgroundColor(whichFloor);
 
     }//END setFirstFloors()
-
 
     //set 2nd floors
     public void setSecondFloors(){
@@ -679,14 +393,11 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),layerId2);
         mMapView.addLayer(dynamicMapServiceLayer);
 
-
         //now highlight the button
         whichFloor = 2;
         changeButtonBackgroundColor(whichFloor);
 
-
     }//END setSecondFloors()
-
 
     //set 3rd floors
     public void setThirdFloors(){
@@ -700,9 +411,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         whichFloor = 3;
         changeButtonBackgroundColor(whichFloor);
 
-
     }//END setThirdFloors()
-
 
     //set 4th floors
     public void setFourthFloors(){
@@ -718,15 +427,12 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
     }//END setFourthFloors()
 
-
     //set 5th floors
     public void setFifthFloors(){
-
 
         mMapView.removeLayer(dynamicMapServiceLayer);
         dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),layerId5);
         mMapView.addLayer(dynamicMapServiceLayer);
-
 
         //now highlight the button
         whichFloor = 5;
@@ -816,11 +522,10 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
     //function checks for the address the user types and displays a toast message with the
     // corresponding floor number
     public void setFloor(String address){
-
+        //iterate through the address until the first number is found
+        //the first number will represent which floor level to set the layer to using
+        //setFloors
         for(int i = 0; i < address.length(); i++){
-            //iterate through the address until the first number is found
-            //the first number will represent which floor level to set the layer to using
-            //setFloors
             char choice = address.charAt(i);
 
             if(choice == '0'){
@@ -853,13 +558,10 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                 //break;
             }
         }
-        //show the buttons to know which floor one is in
-
         return;
     }
 
-
-
+    //here for testing purpouses
     public void displayToast(String msg){
 
         Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
@@ -869,17 +571,179 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
 
 
+    //Code for the Buttons ENDS here
+
+    //GPS
+    //Permision for GPS
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Location permission was granted. This would have been triggered in response to failing to start the
+            // LocationDisplay, so try starting this again.
+            //initialize Routing
+            manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            //if users gps is not enabled, let them know
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                buildAlertMessageNoGps();
+            }
+
+            //displayLocation Code
+            //initialize Routing
+            mGraphicsLayer = new GraphicsLayer();
+            manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            //if users gps is not enabled, let them know
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                buildAlertMessageNoGps();
+            }
+
+            // Get the location display manager and start reading location. Don'
+            //auto-pan
+            // to center our position
+            ldm = mMapView.getLocationDisplayManager();
+            ldm.setLocationListener(new MyLocationListener());
+            ldm.start();
+            ldm.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
+
+        } else {
+            // If permission was denied, show toast to inform user what was chosen. If LocationDisplay is started again,
+            // request permission UX will be shown again, option should be shown to allow never showing the UX again.
+            // Alternative would be to disable functionality so request is not shown again.
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.location_permission_denied), Toast
+                    .LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * If GPS is disabled, app won't be able to route. Hence display a dialoge window to enable the GPS
+     */
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Please enable your GPS before proceeding")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private class MyLocationListener implements LocationListener {
+
+        public MyLocationListener() {
+            super();
+        }
+
+        /**
+         * If location changes, update our current location. If being found for
+         * the first time, zoom to our current position with a resolution of 20
+         */
+        public void onLocationChanged(Location loc) {
+            if (loc == null)
+                return;
+            boolean zoomToMe = (mLocation == null);
+            mLocation = new Point(loc.getLongitude(), loc.getLatitude());
+            //if (zoomToMe) { //this sets initial location at start
+                //Point p = (Point) GeometryEngine.project(mLocation, egs, wm);
+                //mMapView.zoomToResolution(p, 20.0);
+            //}
+        }
+
+        public void onProviderDisabled(String provider) {
+            Toast.makeText(getApplicationContext(), "GPS Disabled",
+                    Toast.LENGTH_SHORT).show();
+            buildAlertMessageNoGps();
+        }
+
+        public void onProviderEnabled(String provider) {
+            Toast.makeText(getApplicationContext(), "GPS Enabled",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+    }
+    //END GPS
+
+    public void onDialogMessage(int boxNum) { //box number of the grid
+
+        switch(boxNum){
+            case 1:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),bikeRacks);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 2:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),parkingDispensers);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 3:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),disabilityParkingAreas);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 4:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),informationCenters);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 5:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),palmDesertShuttle);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 6:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),emergencyPhones);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 7:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),restRooms);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 8:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),evchargingstations);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 9:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),healthCenter);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 10:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),atm);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 11:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),campusEvacuationSites);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            case 12:
+                mMapView.removeLayer(dynamicMapServiceLayer);
+                dynamicMapServiceLayer = new ArcGISDynamicMapServiceLayer(getResources().getString(R.string.MapServer),dining);
+                mMapView.addLayer(dynamicMapServiceLayer);
+                break;
+            default:
+                //by default set it to the first floor
+                resetButtonBackgroundColor();
+                break;
+        }
+    }//END onDIalog
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-
-        //start
-        //MenuInflater menuInflater = getMenuInflater();
-        //menuInflater.inflate(R.menu.menu_main, menu);
-        //return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -923,7 +787,6 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
             super.onBackPressed();
         }
     }
-
 
     // Initialize suggestion cursor
     private void initSuggestionCursor() {
@@ -996,8 +859,6 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
                 suggestClickFlag = true;
 
-
-
                 // Find the Location of the suggestion
                 new FindLocationTask(address).execute(address);
 
@@ -1008,13 +869,11 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         });
     }
 
-
     /**
      * Called from search_layout.xml when user presses Search button.
      *
      * @param address The text in the searchbar to be geocoded
      */
-
     public void onSearchButtonClicked(String address) {
         hideKeyboard();
         setFloor(address);
@@ -1022,32 +881,13 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         //mMapViewHelper.removeAllGraphics();
         executeLocatorTask(address);
     }
-    /*
-    public void onSearchButtonClicked(String address) {
-        hideKeyboard();
-        mMapViewHelper.removeAllGraphics();
-        searchClickFlag = true;
-        searchMiss = true;
 
-
-        new FindLocationTask(address).execute(address);
-
-        if(searchMiss == false) {
-            if (searchMenuItem != null) {
-                //searchMenuItem.collapseActionView();
-                invalidateOptionsMenu();
-            }
-        }
-        executeLocatorTask(address);//This line was commented 
-    }
-*/
     private void executeLocatorTask(String address) {
 
         //Create Locator parameters from single line address string
         locatorParams(FIND_PLACE, address);
 
         //Execute async task to find the address
-
         LocatorAsyncTask locatorTask = new LocatorAsyncTask();
         locatorTask.execute(findParams);
 
@@ -1081,10 +921,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
             // Create locator using default online geocoding service and tell it
             // to
             // find the given address
-
             Locator locator = Locator.createOnlineLocator(url);//url
-
-
             try {
                 results = locator.find(params[0]);
             } catch (Exception e) {
@@ -1126,13 +963,9 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                 // Display the result on the map
                 displaySearchResult(x,y,address);
                 hideKeyboard();
-
-
             }
         }
-
     }
-
 
     //Fetch the Location from the Map and display it
     private class FindLocationTask extends AsyncTask<String,Void,Point> {
@@ -1189,9 +1022,7 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
 
             hideKeyboard();
         }
-
     }
-
 
     @Override
     protected void onDestroy() {
@@ -1224,7 +1055,6 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
      *
      * @param suggestText String the user typed so far to fetch the suggestions
      */
-
     protected void getSuggestions(String suggestText) {
         final CallbackListener<List<LocatorSuggestionResult>> suggestCallback = new CallbackListener<List<LocatorSuggestionResult>>() {
             @Override
@@ -1247,15 +1077,11 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
                                 // Add the suggestion results to the cursor
                                 mSuggestionCursor.addRow(new Object[]{key++, result.getText(), "0", "0"});
                             }
-
                             applySuggestionCursor();
                         }
                     }
-
                 });
-
             }
-
 
             @Override
             public void onError(Throwable throwable) {
@@ -1298,8 +1124,6 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
             // Set the radial search distance in meters
             findParams.setDistance(500.0);
         }
-
-
     }
 
     /**
@@ -1308,18 +1132,14 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
      * @param y Latitude of the place
      * @param address The address of the location
      */
-    //CALLOUT
     protected void displaySearchResult(double x, double y, String address) {
 
         //The following line, sets the correct floor on the map
         setFloor(address);
 
-
         // Add a marker at the found place. When tapping on the marker, a Callout with the address
         // will be displayed
         mMapViewHelper.addMarkerGraphic(y, x, LOCATION_TITLE, address, R.drawable.coyote_mascot,getResources().getDrawable(R.drawable.coyote_paw) , false, 1);//was android.R.drawable.ic_menu_myplaces
-
-
 
         mMapView.centerAndZoom(y, x, 20);
         mSearchView.setQuery(address, true);
@@ -1336,9 +1156,5 @@ public class MainActivity extends AppCompatActivity implements Grid.Communicator
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
     }
-
-
-
-
 
 }

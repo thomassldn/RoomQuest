@@ -29,7 +29,7 @@ import android.widget.Toast;
  * fragment that comes out when the user clicks on the grid icon on the application
  * in the MainActivity.
  *
- * I followed some of the things concepts of this tutorial:
+ * I followed some of the concepts of this tutorial:
  * https://www.youtube.com/watch?v=bkUHeXCX8XM
  *
  */
@@ -39,16 +39,15 @@ public class Grid extends DialogFragment implements View.OnClickListener{
 
     Button one, two, three, four, five, six, seven,
             eight, nine, ten, eleven, twelve ;//grid buttons
+
     Communicator communicator;
     int gridBoxNum = 0 ; //this will be passed to main activity
-    //it is the box number for the grid
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         communicator = (Communicator) activity;
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
@@ -61,8 +60,6 @@ public class Grid extends DialogFragment implements View.OnClickListener{
         //divider.setBackgroundColor(getResources().getColor(R.color.justWhite));
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
-
-        setCancelable(false);//prevents user from canceling the grid
 
         one = (Button) view.findViewById(R.id.grid_button_one);
         one.setOnClickListener(this);
@@ -99,10 +96,7 @@ public class Grid extends DialogFragment implements View.OnClickListener{
         twelve = (Button) view.findViewById(R.id.grid_button_twelve);
         twelve.setOnClickListener(this);
 
-
-
-
-
+        setCancelable(true);//prevents user from canceling the grid
 
         return view; //inflater.inflate(R.layout.grid, null);
     }
@@ -112,7 +106,6 @@ public class Grid extends DialogFragment implements View.OnClickListener{
         if(view.getId() == R.id.grid_button_one){
             communicator.onDialogMessage(1);
             dismiss();
-
         }
         else if(view.getId() == R.id.grid_button_two){
             communicator.onDialogMessage(2);
@@ -152,13 +145,10 @@ public class Grid extends DialogFragment implements View.OnClickListener{
         }else if(view.getId() == R.id.grid_button_twelve){
             communicator.onDialogMessage(12);
             dismiss();
-
         }
-
     }
-
-
     interface  Communicator {
         public void onDialogMessage(int boxNum);
     }
+
 }//END CLASS GRID

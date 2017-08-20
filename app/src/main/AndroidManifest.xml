@@ -27,6 +27,8 @@
         <!-- used to be apptheme>  -->
         <activity
             android:name=".SplashScreen"
+            android:configChanges="orientation|screenSize|uiMode"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

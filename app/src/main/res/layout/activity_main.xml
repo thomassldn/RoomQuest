@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         mapoptions.MapType =   "Streets"
-        mapoptions.ZoomLevel = "19"
-        mapoptions.center = "34.181991, -117.324309">
+        mapoptions.ZoomLevel = "18"
+        mapoptions.center = "34.1822, -117.3235">
     </com.esri.android.map.MapView>
     <!-- android:layout_below="@+id/directionsSpinner" -->
 
