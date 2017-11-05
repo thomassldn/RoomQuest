@@ -5,6 +5,7 @@ RoomQuest is an android mobil application, written in Java, that lets users find
 
 
 TO VIEW SOURCE CODE: 
+go up one directory and then
 go to /app/src/main/java/roomquest/cse/csusb/edu/roomquest on this git repository.
 
 ![alt text](splash_screen.png)
