@@ -1,5 +1,6 @@
 
-![Alt text](https://github.com/thomassldn/RoomQuest/blob/master/Project_Pictures/bldg_collegeofEducation.png)
+
+<img src="https://github.com/thomassldn/RoomQuest/blob/master/Project_Pictures/bldg_collegeofEducation.png" width="15%"></img>
 
 ROOMQUEST ANDROID MOBILE APPLICATION
 
